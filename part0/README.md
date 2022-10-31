@@ -1,6 +1,6 @@
 # Part 0 - Fundamentals of Web apps
 
-Sequence diagrams are made using [Mermaid](https://mermaid-js.github.io/mermaid/#/sequenceDiagram) syntax for each exercise depict the interaction between the browser and server in different situations.
+Sequence diagrams are made using [Mermaid](https://mermaid-js.github.io/mermaid/#/sequenceDiagram) syntax for each exercise and depict the interaction between the browser and server in different situations.
 
 ## 0.4: New note
 ```mermaid
