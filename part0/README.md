@@ -1,8 +1,8 @@
-# Part 0
-## Fundamentals of Web apps
+# Part 0 - Fundamentals of Web apps
 
+Sequence diagrams are made using [Mermaid](https://mermaid-js.github.io/mermaid/#/sequenceDiagram) syntax for each exercise depict the interaction between the browser and server in different situations.
 
-### Exercise 0_4
+## 0.4: New note
 ```mermaid
 sequenceDiagram
     browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
@@ -27,7 +27,7 @@ sequenceDiagram
     note over browser: The broswer executes the event handler and renders notes 
 ```
 
-### Exercise 0_5
+## 0.5: Single page app
 
 ```mermaid
 sequenceDiagram
@@ -45,7 +45,7 @@ sequenceDiagram
     note over browser: The broswer executes the event handler and renders notes.
 ```
 
-### Exercise 0_6
+## 0.6: New note
 
 ```mermaid
 sequenceDiagram
