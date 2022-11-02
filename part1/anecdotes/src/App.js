@@ -29,7 +29,7 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
+  const [votes, setVotes] = useState(() => new Uint8Array(anecdotes.length))
 
   const handleNextClick = () => {
     const random = Math.floor(Math.random() * anecdotes.length)
