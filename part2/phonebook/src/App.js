@@ -21,7 +21,8 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     }
-    if(persons.filter(person => person.name.toLowerCase().trim() === newName.toLowerCase().trim()).length > 0){
+
+    if(persons.find(person => person.name.toLowerCase().trim() === newName.toLowerCase().trim())){
       alert(`${newName} is already in the phonebook`)
     } else {
       setPersons(persons.concat(personObject))
