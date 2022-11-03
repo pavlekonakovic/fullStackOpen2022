@@ -18,22 +18,21 @@ function App() {
   }, [])
 
   const handleFilterChange = event => {
-    setSearchCountry(event.target.value)
-    console.log(searchCountry)
-    if(searchCountry){
+    const filter = event.target.value
+    setSearchCountry(filter)
+    if(filter){
       setFilteredCountries(
         countries.filter(country =>
-          country.name.common.toLowerCase().includes(searchCountry.toLowerCase())
+          country.name.common.toLowerCase().includes(filter.toLowerCase())
         )
       )
     }
   }
 
-
   return (
     <div>
      <Filter value={searchCountry} handleChange={handleFilterChange} />
-     <Countries countries={filteredCountries}/>
+     <Countries countries={filteredCountries} setFilteredCountries={setFilteredCountries}/>
     </div>
   );
 }
