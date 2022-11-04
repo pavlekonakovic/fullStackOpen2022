@@ -7,18 +7,12 @@ const Weather = ({ city }) => {
 
   useEffect(() => {
     axios
-      .get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${api_key}`)
+      .get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${api_key}`)
       .then(response => {
-        const latLongObj = {
-          lat: Math.round((response.data[0].lat)*100) / 100,
-          lon: Math.round((response.data[0].lon)*100) / 100,
-        }
-        axios
-          .get(`https://api.openweathermap.org/data/2.5/weather?lat=${latLongObj.lat}&lon=${latLongObj.lon}&units=metric&appid=${api_key}`)
-          .then(response => {
-            setWeather(response.data)
-          })
+        setWeather(response.data)
       })
+      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return(
