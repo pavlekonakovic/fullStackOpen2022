@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+
 import Filter from './components/Filter'
-import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 import personsService from './services/persons'
 
 const App = () => {
@@ -9,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personsService
@@ -32,8 +35,20 @@ const App = () => {
         personsService
           .update(alreadyExists.id, personObject)
           .then(returnedPersons => {
-            const newPersons = persons.map(person => person.id !== returnedPersons.id ? person : returnedPersons)
-            setPersons(newPersons)
+            setNotification(`Updated ${returnedPersons.name}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+            setPersons(persons.map(person => person.id !== returnedPersons.id ? person : returnedPersons))
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(err => {
+            setNotification(`Information of ${alreadyExists.name} has already been removed from server.${err.message}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+            setPersons(persons.filter(person => person.id !== alreadyExists.id))
             setNewName('')
             setNewNumber('')
           })
@@ -42,6 +57,10 @@ const App = () => {
       personsService
         .create(personObject)
         .then(returnedPersons => {
+          setNotification(`Added ${returnedPersons.name}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
           setPersons(persons.concat(returnedPersons))
           setNewName('')
           setNewNumber('')
@@ -54,9 +73,8 @@ const App = () => {
     if(window.confirm(`Delete ${name}?`)){
       personsService
         .remove(id)
-        .then(response => {
-          const newPersons = persons.filter(person => person.id !== id)
-          setPersons(newPersons)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
         })
     }
   }
@@ -74,7 +92,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={notification} />
       <Filter handleFilterChange={handleFilterChange} filter={filter}/>
 
       <h3>add new</h3>
