@@ -74,6 +74,10 @@ const App = () => {
       personsService
         .remove(id)
         .then(() => {
+          setNotification(`Removed ${name}.`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
           setPersons(persons.filter(person => person.id !== id))
         })
     }
