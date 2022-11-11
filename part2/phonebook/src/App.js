@@ -43,8 +43,8 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
-          .catch(err => {
-            setNotification(`Information of ${alreadyExists.name} has already been removed from server.${err.message}`)
+          .catch(error => {
+            setNotification(`Error: Information of ${alreadyExists.name} has already been removed from server.${error.message}`)
             setTimeout(() => {
               setNotification(null)
             }, 5000)
@@ -64,6 +64,12 @@ const App = () => {
           setPersons(persons.concat(returnedPersons))
           setNewName('')
           setNewNumber('')
+        })
+        .catch(error => {
+          setNotification(`Error: ${error.response.data.error}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
     }
     
