@@ -1,3 +1,5 @@
+const lodash = require('lodash')
+
 // eslint-disable-next-line
 const dummy = (blogs) => {
   return 1
@@ -23,4 +25,16 @@ const favoriteBlog = (blogs) => {
   }
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  if(blogs.length === 0) return null
+
+  const authorWithMostBlogs =
+  lodash.reduce(
+    lodash.countBy(blogs, 'author'), (result, value, key) => {
+      return value > result.blogs ? { author: key, blogs: value } : result
+    }, { blogs: 0 })
+
+  return authorWithMostBlogs
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
