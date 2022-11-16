@@ -28,13 +28,29 @@ const favoriteBlog = (blogs) => {
 const mostBlogs = (blogs) => {
   if(blogs.length === 0) return null
 
-  const authorWithMostBlogs =
-  lodash.reduce(
-    lodash.countBy(blogs, 'author'), (result, value, key) => {
-      return value > result.blogs ? { author: key, blogs: value } : result
-    }, { blogs: 0 })
+  const authorWithMostBlogs = lodash(blogs)
+    .countBy('author')
+    .reduce((result, value, key) =>  value > result.blogs
+      ? { author: key, blogs: value }
+      : result, { blogs: 0 })
 
   return authorWithMostBlogs
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogs) => {
+  if(blogs.length === 0) return null
+
+  const authorWithMostLikes = lodash(blogs)
+    .groupBy('author')
+    .map((blog, key) => ({
+      author: key,
+      likes: lodash.sumBy(blog, 'likes')
+    })
+    )
+    .value()
+    .reduce((a, b) => a.likes > b.likes ? a : b)
+
+  return authorWithMostLikes
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
