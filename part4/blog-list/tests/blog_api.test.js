@@ -70,6 +70,21 @@ test('if likes property is missing it will default to 0', async () => {
   expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
 })
 
+test('if title or url are missing respond with 400 Bad Request', async () => {
+  const newBlog = {
+    author: 'John Doe',
+    likes: 0,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await blogsInDb()
+  expect(blogsAtEnd.length).toBe(blogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
