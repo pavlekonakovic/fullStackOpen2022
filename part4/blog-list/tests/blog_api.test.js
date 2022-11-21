@@ -118,16 +118,48 @@ describe('addition of a new note', () => {
 })
 
 describe('deletion of a blog', () => {
+  let headers
+  beforeEach(async () => {
+    await User.deleteMany({})
+    await Blog.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('secret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+
+    const userForToken = {
+      usrname: user.username,
+      id: user.id
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
+
+    const blogToBeDeleted = new Blog({
+      title: 'Blog For Deleting',
+      author: 'Some Name',
+      url: 'website.com',
+      user: user.id,
+    })
+
+    await blogToBeDeleted.save()
+
+
+    return headers = {
+      'Authorization': `bearer ${token}`
+    }
+  })
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set(headers)
       .expect(204)
 
     const blogsAtEnd = await blogsInDb()
-    expect(blogsAtEnd).toHaveLength(blogs.length - 1)
+    expect(blogsAtEnd).toHaveLength(0)
 
     const title = blogsAtEnd.map(blog => blog.title)
     expect(title).not.toContain(blogToDelete.title)
