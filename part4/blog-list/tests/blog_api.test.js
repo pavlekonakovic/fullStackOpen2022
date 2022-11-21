@@ -1,10 +1,14 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 const app = require('../app')
 const api = supertest(app)
 const { blogs, blogsInDb } = require('./blogsForTest')
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -35,6 +39,26 @@ describe('when there is some initial notes saved', () => {
 })
 
 describe('addition of a new note', () => {
+  let headers
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('secret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+
+    const userForToken = {
+      usrname: user.username,
+      id: user.id
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
+
+    return headers = {
+      'Authorization': `bearer ${token}`
+    }
+  })
   test('a valid blog post can be added', async () => {
     const newBlog = {
       title: 'New Test Title',
@@ -46,6 +70,7 @@ describe('addition of a new note', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -67,6 +92,7 @@ describe('addition of a new note', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -83,6 +109,7 @@ describe('addition of a new note', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(400)
 
     const blogsAtEnd = await blogsInDb()
