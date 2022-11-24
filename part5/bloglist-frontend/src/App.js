@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import Blog from './components/Blog'
-import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import LoginFrom from './components/LoginForm'
+import Notification from './components/Notification'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
-import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,11 +15,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  
   const [notification, setNotification] = useState(null)
+
+  const blogFormRef = useRef()
   
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -68,29 +67,20 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title,
-      author,
-      url,
-    }
-
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setAuthor('')
-        setTitle('')
-        setUrl('')
-        setNotification(`a new blog ${title} by ${author} added`)
+        setNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setNotification(null)
         }, 5000)
       })
       .catch(error => {
         setNotification(
-          `error: failed to add blog ${title} by ${author}. ${error.message}`
+          `error: failed to add blog.${error.message}`
         )
         setTimeout(() => {
           setNotification(null)
@@ -98,6 +88,17 @@ const App = () => {
       })
   }
 
+  const updateLike = async (id, newObject) => {
+    try{
+      const response = await blogService.update(id, newObject)
+      setBlogs(blogs.map(blog=> blog.id !== response.id ? blog : {...blog, likes: response.likes}))
+    } catch (exception){
+      setNotification(`error ${exception.response.data}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000)
+    }
+  }
 
   return (
     <div>
@@ -114,17 +115,13 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-          <BlogForm 
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-            addBlog={addBlog}
-          />
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+          <Togglable buttonLabel='new blog' ref={blogFormRef}>
+            <BlogForm createBlog={addBlog}/>
+          </Togglable>
+          {blogs
+            .sort((a, b) => b.likes - a.likes)
+            .map(blog =>
+              <Blog key={blog.id} blog={blog} updateLike={updateLike}/>
           )}  
         </div>  
       }
