@@ -67,25 +67,23 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      })
-      .catch(error => {
-        setNotification(
-          `error: failed to add blog.${error.message}`
-        )
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)  
-      })
+  const addBlog = async (blogObject) => {
+    try{
+      blogFormRef.current.toggleVisibility()
+      const blog = await blogService.create(blogObject)
+      setBlogs(blogs.concat({...blog, user }))
+      setNotification(`a new blog ${blog.title} by ${blog.author} added`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    } catch (exception) {
+      setNotification(
+        `error: failed to add blog.${exception.message}`
+      )
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)  
+    }
   }
 
   const updateLike = async (id, newObject) => {
@@ -93,10 +91,27 @@ const App = () => {
       const response = await blogService.update(id, newObject)
       setBlogs(blogs.map(blog=> blog.id !== response.id ? blog : {...blog, likes: response.likes}))
     } catch (exception){
-      setNotification(`error ${exception.response.data}`)
+      setNotification(`error ${exception.message}`)
       setTimeout(() => {
         setNotification(null)
       }, 3000)
+    }
+  }
+
+  const removeBlog = async id => {
+    try{
+      await blogService.remove(id)
+
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      setNotification(`Blog removed`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000)
+    } catch (exception) {
+      setNotification(`error ${exception.message}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000) 
     }
   }
 
@@ -121,7 +136,13 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
-              <Blog key={blog.id} blog={blog} updateLike={updateLike}/>
+              <Blog 
+                key={blog.id} 
+                blog={blog} 
+                updateLike={updateLike} 
+                username={user.username}
+                removeBlog={removeBlog}
+              />
           )}  
         </div>  
       }
