@@ -14,15 +14,15 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
-  
+
   const [notification, setNotification] = useState(null)
 
   const blogFormRef = useRef()
-  
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const App = () => {
     try{
       blogFormRef.current.toggleVisibility()
       const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat({...blog, user }))
+      setBlogs(blogs.concat({ ...blog, user }))
       setNotification(`a new blog ${blog.title} by ${blog.author} added`)
       setTimeout(() => {
         setNotification(null)
@@ -82,14 +82,14 @@ const App = () => {
       )
       setTimeout(() => {
         setNotification(null)
-      }, 5000)  
+      }, 5000)
     }
   }
 
   const updateLike = async (id, newObject) => {
     try{
       const response = await blogService.update(id, newObject)
-      setBlogs(blogs.map(blog=> blog.id !== response.id ? blog : {...blog, likes: response.likes}))
+      setBlogs(blogs.map(blog => blog.id !== response.id ? blog : { ...blog, likes: response.likes }))
     } catch (exception){
       setNotification(`error ${exception.message}`)
       setTimeout(() => {
@@ -103,7 +103,7 @@ const App = () => {
       await blogService.remove(id)
 
       setBlogs(blogs.filter(blog => blog.id !== id))
-      setNotification(`Blog removed`)
+      setNotification('Blog removed')
       setTimeout(() => {
         setNotification(null)
       }, 3000)
@@ -111,22 +111,25 @@ const App = () => {
       setNotification(`error ${exception.message}`)
       setTimeout(() => {
         setNotification(null)
-      }, 3000) 
+      }, 3000)
     }
   }
+
+  const handleUsernameChange = ({ target }) => setUsername(target.value)
+  const handlePasswordChange = ({ target }) => setPassword(target.value)
 
   return (
     <div>
       <Notification message={notification}/>
 
       {user === null ?
-        <LoginFrom 
+        <LoginFrom
           handleLogin={handleLogin}
           username={username}
-          setUsername={setUsername}
+          handleUsernameChange={handleUsernameChange}
           password={password}
-          setPassword={setPassword}
-        /> : 
+          handlePasswordChange={handlePasswordChange}
+        /> :
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
@@ -136,15 +139,15 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
-              <Blog 
-                key={blog.id} 
-                blog={blog} 
-                updateLike={updateLike} 
+              <Blog
+                key={blog.id}
+                blog={blog}
+                updateLike={updateLike}
                 username={user.username}
                 removeBlog={removeBlog}
               />
-          )}  
-        </div>  
+            )}
+        </div>
       }
     </div>
   )

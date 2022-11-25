@@ -1,4 +1,6 @@
-const LoginFrom = ({handleLogin, username, password, setUsername, setPassword}) => (
+import PropTypes from 'prop-types'
+
+const LoginFrom = ({ handleLogin, username, password, handleUsernameChange, handlePasswordChange }) => (
   <div>
     <h2>Log in to application</h2>
     <form onSubmit={handleLogin}>
@@ -8,7 +10,7 @@ const LoginFrom = ({handleLogin, username, password, setUsername, setPassword}) 
           type='text'
           value={username}
           name='Username'
-          onChange={({ target }) => setUsername(target.value)} 
+          onChange={handleUsernameChange}
         />
       </div>
       <div>
@@ -17,12 +19,20 @@ const LoginFrom = ({handleLogin, username, password, setUsername, setPassword}) 
           type='password'
           value={password}
           name='Password'
-          onChange={({ target }) => setPassword(target.value)} 
+          onChange={handlePasswordChange}
         />
       </div>
       <button type='submit'>login</button>
     </form>
   </div>
 )
+
+LoginFrom.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+}
 
 export default LoginFrom
