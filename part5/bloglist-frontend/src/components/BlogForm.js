@@ -22,40 +22,43 @@ const BlogForm = ({ createBlog }) => {
     setNewUrl('')
   }
 
-return(
-  <div>
-    <h2>create new</h2>
-    <form onSubmit={addBlog}>
-      <div>
+  return(
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={addBlog}>
+        <div>
         title
-        <input 
-          type='text'
-          value={newTitle}
-          name='Title'
-          onChange={handleTitleChange}
-        />
-      </div>
-      <div>
+          <input
+            type='text'
+            value={newTitle}
+            name='Title'
+            onChange={handleTitleChange}
+            className='title'
+          />
+        </div>
+        <div>
         author
-        <input 
-          type='text'
-          value={newAuthor}
-          name='Author'
-          onChange={handleAuthorChange}
-        />
-      </div>
-      <div>
+          <input
+            type='text'
+            value={newAuthor}
+            name='Author'
+            onChange={handleAuthorChange}
+            className='author'
+          />
+        </div>
+        <div>
         url
-        <input 
-          type='text'
-          value={newUrl}
-          name='Url'
-          onChange={handleUrlChange}
-        />
-      </div>
-      <button type='submit'>create</button>
-    </form>
-  </div>
-)}
+          <input
+            type='text'
+            value={newUrl}
+            name='Url'
+            onChange={handleUrlChange}
+            className='url'
+          />
+        </div>
+        <button type='submit'>create</button>
+      </form>
+    </div>
+  )}
 
 export default BlogForm
