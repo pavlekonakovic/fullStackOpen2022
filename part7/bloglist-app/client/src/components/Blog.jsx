@@ -1,6 +1,12 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, updateLike, username, removeBlog }) => {
+import { deleteBlog, voteBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
+
+const Blog = ({ blog, username }) => {
+  const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -14,20 +20,22 @@ const Blog = ({ blog, updateLike, username, removeBlog }) => {
   }
 
   const handleLikes = () => {
-    const updatedBlog = {
-      user: blog.user.id,
-      likes: blog.likes + 1,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    try {
+      dispatch(voteBlog(blog.id, updatedBlog))
+    } catch (error) {
+      dispatch(setNotification(`error ${error.message}`, 5))
     }
-
-    updateLike(blog.id, updatedBlog)
   }
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      removeBlog(blog.id)
+      try {
+        dispatch(deleteBlog(blog))
+        dispatch(setNotification('Blog removed', 5))
+      } catch (error) {
+        dispatch(setNotification(`error ${error.message}`, 5))
+      }
     }
   }
 
