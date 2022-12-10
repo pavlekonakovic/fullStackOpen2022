@@ -1,66 +1,41 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Routes, Route } from 'react-router-dom'
 
-import BlogList from './components/BlogList'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Togglable'
+import Menu from './components/Menu'
+import Blogs from './components/Blogs'
 import LoginFrom from './components/LoginForm'
 import Notification from './components/Notification'
+import Users from './components/Users'
 
 import { initializeBlogs } from './reducers/blogReducer'
-import { initializeUser, userLogin, userLogout } from './reducers/userReducer'
+import { initializeUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
   const user = useSelector((state) => state.user)
 
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-
-  const blogFormRef = useRef()
-
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
   }, [dispatch])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    dispatch(userLogin(username, password))
-    setUsername('')
-    setPassword('')
-  }
-
-  const handleLogout = () => {
-    dispatch(userLogout())
-  }
-
-  const handleUsernameChange = ({ target }) => setUsername(target.value)
-  const handlePasswordChange = ({ target }) => setPassword(target.value)
 
   return (
     <div>
       <Notification />
 
       {user === null ? (
-        <LoginFrom
-          handleLogin={handleLogin}
-          username={username}
-          handleUsernameChange={handleUsernameChange}
-          password={password}
-          handlePasswordChange={handlePasswordChange}
-        />
+        <LoginFrom />
       ) : (
         <div>
-          <h2>blogs</h2>
-          <p>
-            {user.name} logged in <button onClick={handleLogout}>logout</button>
-          </p>
-          <Togglable buttonLabel='new blog' ref={blogFormRef}>
-            <BlogForm />
-          </Togglable>
-          <BlogList username={user.username} />
+          <Menu />
+          <h1>Blogg App</h1>
+
+          <Routes>
+            <Route path='/' element={<Blogs />} />
+            <Route path='/users' element={<Users />} />
+          </Routes>
         </div>
       )}
     </div>

@@ -45,7 +45,7 @@ export const userLogin = (username, password) => {
   }
 }
 
-export const userLogout = () => {
+export const userLogout = (user) => {
   return async dispatch => {
     window.localStorage.clear()
     dispatch(removeUser())
