@@ -5,7 +5,7 @@ import { setNotification } from '../reducers/notificationReducer'
 
 import { useField } from '../hooks'
 
-const BlogForm = () => {
+const BlogForm = ({ blogRef }) => {
   const dispatch = useDispatch()
 
   const [newTitle, resetTitle] = useField('text', 'title')
@@ -14,22 +14,18 @@ const BlogForm = () => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-    try {
-      dispatch(
-        createBlog({
-          title: newTitle.value,
-          author: newAuthor.value,
-          url: newUrl.value,
-        }),
-      )
-      dispatch(setNotification(`a new blog ${newTitle.value} by ${newAuthor.value} added`, 5))
+    blogRef.current.toggleVisibility()
+    dispatch(
+      createBlog({
+        title: newTitle.value,
+        author: newAuthor.value,
+        url: newUrl.value,
+      }),
+    )
 
-      resetAuthor()
-      resetTitle()
-      resetUrl()
-    } catch (error) {
-      dispatch(setNotification(`error creating the blog. ${error.message}`))
-    }
+    resetAuthor()
+    resetTitle()
+    resetUrl()
   }
 
   return (

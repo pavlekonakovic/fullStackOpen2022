@@ -10,6 +10,8 @@ import Users from './components/Users'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import User from './components/User'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -19,6 +21,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
+    dispatch(initializeUsers())
   }, [dispatch])
 
   return (
@@ -35,6 +38,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Blogs />} />
             <Route path='/users' element={<Users />} />
+            <Route path='/users/:id' element={<User />} />
           </Routes>
         </div>
       )}

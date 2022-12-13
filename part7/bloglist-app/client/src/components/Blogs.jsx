@@ -9,14 +9,12 @@ import BlogList from './BlogList'
 const Blogs = () => {
   const blogFormRef = useRef()
 
-  const user = useSelector((state) => state.user)
-
   return (
     <div>
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm />
+        <BlogForm blogRef={blogFormRef} />
       </Togglable>
-      <BlogList username={user.username} />
+      <BlogList />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogServices from '../services/blogs'
+import { setNotification } from './notificationReducer'
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -36,23 +37,36 @@ export const initializeBlogs = () => {
 
 export const createBlog = (blog) => {
   return async dispatch => {
+    try{
       const newBlog = await blogServices.create(blog)
       dispatch(appendBlog(newBlog))
+      dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`, 5))
+    } catch (error) {
+      dispatch(setNotification(`error creating the blog. ${error.message}`))
+    }
   }
 }
 
 export const deleteBlog = (blog) => {
   return async dispatch => {
-    await blogServices.remove(blog.id)
-
-    dispatch(removeBlog(blog.id))
+    try{
+      await blogServices.remove(blog.id)
+      dispatch(removeBlog(blog.id))
+      dispatch(setNotification('Blog removed', 5))
+    } catch (error) {
+      dispatch(setNotification(`error ${error.message}`, 5))
+    }
   }
 }
 
 export const voteBlog = (id, blog) => {
   return async dispatch => {
-    const voteBlog = await blogServices.update(id, blog)
-    dispatch(voteFor(voteBlog))
+    try{
+      const voteBlog = await blogServices.update(id, blog)
+      dispatch(voteFor(voteBlog))
+    } catch (error) {
+      dispatch(setNotification(`error ${error.message}`, 5))
+    }
   }
 }
 

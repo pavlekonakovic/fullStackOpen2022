@@ -26,19 +26,19 @@ blogsRouter.post('/', async (request, response) => {
     return response.status(400).end()
   }
 
-  const blog = new Blog({
+  const blog = await new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: user._id
-  })
+    user: user._id,
+  }).populate('user', { username: 1, name: 1 })
 
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
-  response.status(201).json(savedBlog)
+  response.status(201).json(savedBlog.toJSON())
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
