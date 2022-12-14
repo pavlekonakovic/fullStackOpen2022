@@ -6,11 +6,11 @@ const blogSlice = createSlice({
   name: 'blogs',
   initialState: [],
   reducers: {
-    voteFor(state, action){
+    updateBlog(state, action){
       const changedBlog = action.payload
       const { id } = changedBlog
       return state.map(blog =>
-        blog.id !== id ? blog : {...blog, likes: changedBlog.likes}
+        blog.id !== id ? blog : changedBlog
       )
     },
     appendBlog(state, action) {
@@ -63,12 +63,24 @@ export const voteBlog = (id, blog) => {
   return async dispatch => {
     try{
       const voteBlog = await blogServices.update(id, blog)
-      dispatch(voteFor(voteBlog))
+      dispatch(updateBlog(voteBlog))
     } catch (error) {
       dispatch(setNotification(`error ${error.message}`, 5))
     }
   }
 }
 
-export const { appendBlog, setBlogs, voteFor, removeBlog } = blogSlice.actions
+export const addComment = (id, comment) => {
+  return async dispatch => {
+    try{
+      const updatedBlog = await blogServices.addComment(id, comment)
+      dispatch(updateBlog(updatedBlog))
+      dispatch(setNotification(`Added comment ${comment}`, 5))
+    } catch (error) {
+      dispatch(setNotification(`error adding comment, ${error.message}`))
+    }
+  }
+}
+
+export const { appendBlog, setBlogs, updateBlog, removeBlog } = blogSlice.actions
 export default blogSlice.reducer
