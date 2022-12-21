@@ -1,20 +1,16 @@
 import { useSelector } from 'react-redux'
 
+import Alert from '@mui/material/Alert'
+
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
-
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1,
-  }
 
   return (
     <div>
       {notification && (
-        <div style={style} className={notification.includes('error') ? 'error' : 'success'}>
+        <Alert severity={notification.includes('error') ? 'error' : 'success'}>
           {notification}
-        </div>
+        </Alert>
       )}
     </div>
   )

@@ -5,6 +5,10 @@ import { deleteBlog, voteBlog } from '../reducers/blogReducer'
 
 import Comments from './Comments'
 
+import Button from '@mui/material/Button'
+import DeleteIcon from '@mui/icons-material/Delete'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+
 const Blog = () => {
   const { id } = useParams()
 
@@ -37,12 +41,12 @@ const Blog = () => {
         <p>{blog.url}</p>
         <p>
           likes {blog.likes}
-          <button onClick={handleLikes} className='like-button'>
+          <Button onClick={handleLikes} className='like-button' variant='contained' startIcon={<FavoriteIcon />}>
             like
-          </button>
+          </Button>
         </p>
-        <p>{blog.user.name}</p>
-        {blog.user.username === user.username && <button onClick={handleRemove}>delete</button>}
+        {blog.user.username === user.username && +
+          <Button onClick={handleRemove} variant='contained' startIcon={<DeleteIcon />}>delete</Button>}
         <p>
           added by <strong>{blog.user.name}</strong>
         </p>
