@@ -5,7 +5,7 @@ import { deleteBlog, voteBlog } from '../reducers/blogReducer'
 
 import Comments from './Comments'
 
-import Button from '@mui/material/Button'
+import { Button, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
@@ -34,22 +34,23 @@ const Blog = () => {
 
   return (
     <div className='blog'>
-      <h2>
-        {blog.title} {blog.author}
-      </h2>
+      <Typography variant='h6'>
+        {blog.title} by {blog.author}
+      </Typography>
       <div>
-        <p>{blog.url}</p>
-        <p>
-          likes {blog.likes}
-          <Button onClick={handleLikes} className='like-button' variant='contained' startIcon={<FavoriteIcon />}>
-            like
+        <Typography variant='body2'>{blog.url}</Typography>
+        <Typography variant='subtitle2'>likes {blog.likes}</Typography>
+        <Button onClick={handleLikes} className='like-button' variant='contained' startIcon={<FavoriteIcon />}>
+          like
+        </Button>
+        {blog.user.username === user.username && (
+          <Button onClick={handleRemove} variant='contained' startIcon={<DeleteIcon />}>
+            delete
           </Button>
-        </p>
-        {blog.user.username === user.username && +
-          <Button onClick={handleRemove} variant='contained' startIcon={<DeleteIcon />}>delete</Button>}
-        <p>
+        )}
+        <Typography variant='body2'>
           added by <strong>{blog.user.name}</strong>
-        </p>
+        </Typography>
         <Comments blog={blog} />
       </div>
     </div>

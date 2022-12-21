@@ -1,14 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
-} from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material'
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -21,20 +14,18 @@ const BlogList = () => {
             {[...blogs]
               .sort((a, b) => b.likes - a.likes)
               .map((blog) => (
-                <TableRow key={blog.id}>
+                <TableRow key={blog.id} hover>
                   <TableCell>
-                    <Link to={`/blogs/${blog.id}`}>
+                    <Link to={`/blogs/${blog.id}`} style={{ textDecoration: 'none', color: 'black' }}>
                       {blog.title}
                     </Link>
                   </TableCell>
-                  <TableCell align='right'>
-                    {blog.author}
-                  </TableCell>
+                  <TableCell align='right'>{blog.author}</TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
-      </TableContainer>  
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

@@ -1,16 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography
-} from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material'
 
 const Users = () => {
   const users = useSelector((state) => state.users)
@@ -23,14 +14,18 @@ const Users = () => {
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
-              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: 18 }}>Blogs created</TableCell>
+              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: 18 }}>
+                Blogs created
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow key={user.id} hover>
                 <TableCell>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  <Link to={`/users/${user.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                    {user.name}
+                  </Link>
                 </TableCell>
                 <TableCell align='right'>{user.blogs.length}</TableCell>
               </TableRow>

@@ -28,7 +28,7 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <Container>
+    <Container maxWidth='md'>
       <Notification />
 
       {user === null ? (
@@ -36,7 +36,7 @@ const App = () => {
       ) : (
         <div>
           <Menu />
-          <Typography variant='h2' sx={{ fontWeight: 'bold', my: 4}}>
+          <Typography variant='h2' sx={{ fontWeight: 'bold', my: 4 }}>
             Blogg App
           </Typography>
 

@@ -3,7 +3,8 @@ import { useField } from '../hooks'
 
 import { addComment } from '../reducers/blogReducer'
 
-import { Button, TextField, Typography, Box } from '@mui/material'
+import { Button, TextField, Typography, Box, List, ListItem, ListItemText, ListItemAvatar } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 const Comments = ({ blog }) => {
   const dispatch = useDispatch()
@@ -25,20 +26,21 @@ const Comments = ({ blog }) => {
     <div>
       <Typography variant='h4'>Comments</Typography>
       <Box component='form' onSubmit={handleAddComment} noValidate>
-        <TextField
-          variant='standard'
-          fullWidth 
-          {...newComment}
-        />
-        <Button type='submit' id='comment-button' variant='contained' sx={{ mt: 2}}>
+        <TextField variant='standard' fullWidth {...newComment} />
+        <Button type='submit' id='comment-button' variant='contained' sx={{ mt: 2 }}>
           add comment
         </Button>
       </Box>
-      <ul>
+      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {comments.map((comment, id) => (
-          <li key={id}>{comment}</li>
+          <ListItem key={id} disablePadding alignItems='center' sx={{ borderBottom: 1, borderColor: '#eee', p: 1 }}>
+            <ListItemAvatar>
+              <AccountCircleIcon sx={{ color: '#bdbdbd', fontSize: 32 }} />
+            </ListItemAvatar>
+            <ListItemText primary={comment} />
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </div>
   )
 }
