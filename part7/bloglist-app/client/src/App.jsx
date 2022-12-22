@@ -14,8 +14,6 @@ import { initializeUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
 
-import { Container, Typography } from '@mui/material'
-
 const App = () => {
   const dispatch = useDispatch()
 
@@ -28,27 +26,24 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <Container maxWidth='md'>
+    <>
       <Notification />
 
       {user === null ? (
         <LoginFrom />
       ) : (
         <div>
-          <Menu />
-          <Typography variant='h2' sx={{ fontWeight: 'bold', my: 4 }}>
-            Blogg App
-          </Typography>
-
-          <Routes>
-            <Route path='/' element={<Blogs />} />
-            <Route path='/blogs/:id' element={<Blog />} />
-            <Route path='/users' element={<Users />} />
-            <Route path='/users/:id' element={<User />} />
-          </Routes>
+          <Menu>
+            <Routes>
+              <Route path='/' element={<Blogs />} />
+              <Route path='/blogs/:id' element={<Blog />} />
+              <Route path='/users' element={<Users />} />
+              <Route path='/users/:id' element={<User />} />
+            </Routes>
+          </Menu>
         </div>
       )}
-    </Container>
+    </>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 
-import Alert from '@mui/material/Alert'
+import { Alert, Snackbar } from '@mui/material'
 
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
@@ -8,9 +8,9 @@ const Notification = () => {
   return (
     <div>
       {notification && (
-        <Alert severity={notification.includes('error') ? 'error' : 'success'}>
-          {notification}
-        </Alert>
+        <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          <Alert severity={notification.includes('error') ? 'error' : 'success'}>{notification}</Alert>
+        </Snackbar>
       )}
     </div>
   )
