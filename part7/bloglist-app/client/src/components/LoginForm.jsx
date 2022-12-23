@@ -1,14 +1,8 @@
 import { useField } from '../hooks'
 import { useDispatch } from 'react-redux'
 
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Box from '@mui/material/Box'
+import { Avatar, Button, CssBaseline, TextField, Box, Typography, Container, Paper } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 
 import { userLogin } from '../reducers/userReducer'
 
@@ -26,7 +20,8 @@ const LoginFrom = () => {
   }
 
   return (
-      <Container>
+    <Container maxWidth='sm' sx={{ p: 4 }}>
+      <Paper>
         <CssBaseline />
         <Box
           sx={{
@@ -36,38 +31,22 @@ const LoginFrom = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ mt: 4, mb: 2, bgcolor: 'secondary.main'}}>
+          <Avatar sx={{ mt: 4, mb: 2, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h4'>
             Log in to application
           </Typography>
-          <Box component='form' onSubmit={handleLogin} noValidate sx={{ mt: 3}}>
-            <TextField 
-              margin='normal'
-              required
-              fullWidth
-              autoFocus
-              {...username}
-            />
-            <TextField 
-              margin='normal'
-              required
-              fullWidth
-              autoComplete='current-password'
-              {...password}
-            />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-            >
+          <Box component='form' onSubmit={handleLogin} noValidate sx={{ mt: 3 }}>
+            <TextField margin='normal' required fullWidth autoFocus {...username} />
+            <TextField margin='normal' required fullWidth autoComplete='current-password' {...password} />
+            <Button type='submit' fullWidth variant='contained' sx={{ mt: 4, mb: 8, p: 1 }}>
               login
             </Button>
           </Box>
         </Box>
-      </Container>
+      </Paper>
+    </Container>
   )
 }
 

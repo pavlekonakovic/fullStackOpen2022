@@ -34,25 +34,33 @@ const Blog = () => {
 
   return (
     <div className='blog'>
-      <Typography variant='h6'>
+      <Typography variant='h4'>
         {blog.title} by {blog.author}
       </Typography>
-      <div>
-        <Typography variant='body2'>{blog.url}</Typography>
-        <Typography variant='subtitle2'>likes {blog.likes}</Typography>
-        <Button onClick={handleLikes} className='like-button' variant='contained' startIcon={<FavoriteIcon />}>
-          like
+      <Typography variant='body2' sx={{ my: 2 }}>
+        {blog.url}
+      </Typography>
+      <Typography variant='subtitle2' sx={{ my: 2 }}>
+        likes {blog.likes}
+      </Typography>
+      <Button
+        onClick={handleLikes}
+        className='like-button'
+        variant='contained'
+        startIcon={<FavoriteIcon />}
+        sx={{ mr: 2, my: 2 }}
+      >
+        like
+      </Button>
+      {blog.user.username === user.username && (
+        <Button onClick={handleRemove} variant='contained' startIcon={<DeleteIcon />}>
+          delete
         </Button>
-        {blog.user.username === user.username && (
-          <Button onClick={handleRemove} variant='contained' startIcon={<DeleteIcon />}>
-            delete
-          </Button>
-        )}
-        <Typography variant='body2'>
-          added by <strong>{blog.user.name}</strong>
-        </Typography>
-        <Comments blog={blog} />
-      </div>
+      )}
+      <Typography variant='body2' sx={{ my: 2 }}>
+        added by <strong>{blog.user.name}</strong>
+      </Typography>
+      <Comments blog={blog} />
     </div>
   )
 }

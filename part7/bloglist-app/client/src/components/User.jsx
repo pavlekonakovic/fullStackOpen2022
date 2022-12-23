@@ -11,8 +11,12 @@ const User = () => {
 
   return (
     <Container>
-      <Typography variant='h4'>{user.name}</Typography>
-      <Typography variant='h6'>Added blogs</Typography>
+      <Typography variant='h4' sx={{ my: 2 }}>
+        {user.name}
+      </Typography>
+      <Typography variant='h6' sx={{ my: 2 }}>
+        Added blogs
+      </Typography>
       <Table>
         <TableBody>
           {user.blogs.map((blog) => (

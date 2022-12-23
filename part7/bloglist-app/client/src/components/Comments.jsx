@@ -24,14 +24,14 @@ const Comments = ({ blog }) => {
 
   return (
     <div>
-      <Typography variant='h4'>Comments</Typography>
+      <Typography variant='h6'>Comments</Typography>
       <Box component='form' onSubmit={handleAddComment} noValidate>
         <TextField variant='standard' fullWidth {...newComment} />
         <Button type='submit' id='comment-button' variant='contained' sx={{ mt: 2 }}>
           add comment
         </Button>
       </Box>
-      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <List sx={{ width: '100%', bgcolor: 'background.paper', my: 4 }}>
         {comments.map((comment, id) => (
           <ListItem key={id} disablePadding alignItems='center' sx={{ borderBottom: 1, borderColor: '#eee', p: 1 }}>
             <ListItemAvatar>

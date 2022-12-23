@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, TableHead } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material'
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs)

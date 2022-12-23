@@ -150,13 +150,13 @@ const Menu = (props) => {
               theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
-            // overflow: 'auto',
+            overflow: 'auto',
           }}
         >
           <Toolbar />
-          <Container sx={{ m: 2, width: '100%' }}>
+          <Container sx={{ mt: 3 }}>
             <Grid container spacing={3}>
-              <Grid item xs={14}>
+              <Grid item xs={12}>
                 <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column' }}>{props.children}</Paper>
               </Grid>
             </Grid>

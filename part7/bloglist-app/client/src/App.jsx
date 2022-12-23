@@ -13,6 +13,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
+import { Container, Box } from '@mui/material'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -26,7 +27,14 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+        flexGrow: 1,
+        minHeight: '100vh',
+      }}
+    >
       <Notification />
 
       {user === null ? (
@@ -43,7 +51,7 @@ const App = () => {
           </Menu>
         </div>
       )}
-    </>
+    </Box>
   )
 }
 
