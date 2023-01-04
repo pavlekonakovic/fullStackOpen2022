@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { userLogout } from '../reducers/userReducer'
 
 import {
   Container,
@@ -18,8 +19,6 @@ import {
   ListItemText,
   Paper,
 } from '@mui/material'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
-
 import MuiAppBar from '@mui/material/AppBar'
 import MuiDrawer from '@mui/material/Drawer'
 
@@ -28,7 +27,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import GroupIcon from '@mui/icons-material/Group'
 import NoteIcon from '@mui/icons-material/Note'
 
-import { userLogout } from '../reducers/userReducer'
+import { styled } from '@mui/material/styles'
+import { theme } from '../theme'
 
 const drawerWidth = 240
 
@@ -74,8 +74,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   },
 }))
 
-const mdTheme = createTheme()
-
 const Menu = (props) => {
   const dispatch = useDispatch()
 
@@ -89,7 +87,7 @@ const Menu = (props) => {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <div>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position='absolute' open={open}>
@@ -146,8 +144,7 @@ const Menu = (props) => {
         <Box
           component='main'
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+            backgroundColor: theme.palette.background.default,
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -163,7 +160,7 @@ const Menu = (props) => {
           </Container>
         </Box>
       </Box>
-    </ThemeProvider>
+    </div>
   )
 }
 

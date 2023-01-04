@@ -1,7 +1,7 @@
 import { useField } from '../hooks'
 import { useDispatch } from 'react-redux'
 
-import { Avatar, Button, CssBaseline, TextField, Box, Typography, Container, Paper } from '@mui/material'
+import { Avatar, Button, TextField, Box, Typography, Container, Paper } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 
 import { userLogin } from '../reducers/userReducer'
@@ -22,7 +22,6 @@ const LoginFrom = () => {
   return (
     <Container maxWidth='sm' sx={{ p: 4 }}>
       <Paper>
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,

@@ -7,13 +7,15 @@ import Blog from './components/Blog'
 import Blogs from './components/Blogs'
 import LoginFrom from './components/LoginForm'
 import Notification from './components/Notification'
+import User from './components/User'
 import Users from './components/Users'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import User from './components/User'
-import { Container, Box } from '@mui/material'
+
+import { Box, ThemeProvider } from '@mui/material'
+import { theme } from './theme'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,31 +29,32 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <Box
-      sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-        flexGrow: 1,
-        minHeight: '100vh',
-      }}
-    >
-      <Notification />
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          flexGrow: 1,
+          minHeight: '100vh',
+        }}
+      >
+        <Notification />
 
-      {user === null ? (
-        <LoginFrom />
-      ) : (
-        <div>
-          <Menu>
-            <Routes>
-              <Route path='/' element={<Blogs />} />
-              <Route path='/blogs/:id' element={<Blog />} />
-              <Route path='/users' element={<Users />} />
-              <Route path='/users/:id' element={<User />} />
-            </Routes>
-          </Menu>
-        </div>
-      )}
-    </Box>
+        {user === null ? (
+          <LoginFrom />
+        ) : (
+          <div>
+            <Menu>
+              <Routes>
+                <Route path='/' element={<Blogs />} />
+                <Route path='/blogs/:id' element={<Blog />} />
+                <Route path='/users' element={<Users />} />
+                <Route path='/users/:id' element={<User />} />
+              </Routes>
+            </Menu>
+          </div>
+        )}
+      </Box>
+    </ThemeProvider>
   )
 }
 
