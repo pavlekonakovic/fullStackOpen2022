@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
+
+import Select from 'react-select'
 
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
@@ -10,12 +12,18 @@ const Authors = ({ show, setError }) => {
   const[name, setName] = useState('')
   const[born, setBorn] = useState('')
 
-  const [ changeAuthor ] = useMutation(EDIT_AUTHOR, {
+  const [ changeAuthor, editResult ] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{query: ALL_AUTHORS}],
     onError: () => {
       setError('Fill out all fields')
     }
   })
+
+  useEffect(() => {
+    if(editResult.data && editResult.data.editAuthor === null){
+      setError('Author not found')
+    }
+  }, [editResult.data]) //eslint-disable-line
 
   if(result.loading){
     return <div>loading...</div>
@@ -27,10 +35,14 @@ const Authors = ({ show, setError }) => {
 
   const authors = result.data.allAuthors
 
+  const options = authors.map(a => {
+    return { value: a.name, label: a.name }
+  })
+
   const handleChangeAuthor = (event) => {
     event.preventDefault()
 
-    changeAuthor({ variables: {name, setBornTo: parseInt(born) } })
+    changeAuthor({ variables: {name: name.value, setBornTo: parseInt(born) } })
 
     setName('')
     setBorn('')
@@ -57,13 +69,10 @@ const Authors = ({ show, setError }) => {
       </table>
       <h2>set birthyear</h2>
       <form onSubmit={handleChangeAuthor}>
-        <div>
-          name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+        <Select 
+          options={options}
+          onChange={setName}
+        />
         <div>
           born
           <input
