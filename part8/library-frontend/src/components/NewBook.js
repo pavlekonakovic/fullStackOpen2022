@@ -12,8 +12,10 @@ const NewBook = ({ show, setError }) => {
 
   const [ createBook ] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, {query: ALL_AUTHORS}],
-    onError: () => {
-      setError('Fill out all fields')
+    onError: (error) => {
+      error.graphQLErrors > 0
+        ? setError(error.graphQLErrors[0].message)
+        : setError(error.message)
     }
   })
 

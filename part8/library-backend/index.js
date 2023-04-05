@@ -35,7 +35,7 @@ const typeDefs = gql`
 
   type User {
     username: String!
-    favoriteGenre: String!
+    favouriteGenre: String!
     id: ID!
   }
 
@@ -111,38 +111,40 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
-      let author = await Author.findOne({ name: args.author })
-      const bookExists = await Book.findOne({ title: args.title })
       const currentUser = context.currentUser
       if(!currentUser){
         throw new AuthenticationError('not authenticated')
       }
 
-      if(!bookExists){
+      const bookExists = await Book.findOne({ title: args.title })
+      
+      if(bookExists){
         throw new UserInputError('Book already exists', {
           invalidArgs: args.title
         })
       }
+      
+      const newAuthor = await Author.findOne({ name: args.author })
 
-      if(!author){
-        author = new Author( { name: args.author })
+      if(!newAuthor){
+        const author = new Author({ name: args.author})
+
+        try {
+          await author.save()
+          const book = new Book({ ...args, author:author._id })
+          await book.save()
+          return book
+        } catch(error) {
+          throw new UserInputError(error.message, { invalidArgs: args})
+        }
+      } else {
+        const book = new Book({ ...args, author: newAuthor._id})
 
         try{
-          await author.save()
-        } catch(error){
-          throw new UserInputError(error.message, {
-            invalidArgs: args
-          })
+          await book.save()
+        } catch(error) {
+          throw new UserInputError(error.message, { invalidArgs: args })
         }
-      }
-      const book = new Book({ ...args, author: author.id})
-
-      try{
-        await book.save()
-      } catch (error) {
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        })
       }
 
       return book
