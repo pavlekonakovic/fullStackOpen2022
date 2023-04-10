@@ -2,7 +2,7 @@ type centimeters = number
 type killograms = number
 type BMI = 'Underweight' | 'Normal (healthy weight)' | 'Overweight' | 'Obesity'
 
-const calculateBmi = (height: centimeters, weight: killograms) : BMI => {
+export const calculateBmi = (height: centimeters, weight: killograms) : BMI => {
   const bmi: number = weight/ Math.pow(height / 100, 2)
 
   if(bmi < 18.5) return 'Underweight'
