@@ -1,0 +1,16 @@
+{
+  "name": "calculators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ts-node":"ts-node",
+    "calculateBmi": "ts-node bmiCalculator.ts"
+  },
+  "author": "Pavle Konakovic",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  }
+}
