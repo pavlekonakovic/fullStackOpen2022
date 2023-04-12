@@ -11,7 +11,7 @@ interface ExerciseResults {
 type Rating = 1 | 2 | 3;
 type RatingDescription = 'Nice try, increase your exercises' | 'Not too bad but could be better' | 'Great! Keep up the good work!';
 
-const calculateExercises = (target:number, exerciseHours: number[] ): ExerciseResults => {
+export const calculateExercises = (target:number, exerciseHours: number[] ): ExerciseResults => {
   const periodLenght: number = exerciseHours.length;
   const trainingDays: number = exerciseHours.filter((exercise) => exercise > 0).length;
   const totalHours: number = exerciseHours.reduce((total, currentValue) => total + currentValue, 0);
@@ -27,7 +27,8 @@ const calculateExercises = (target:number, exerciseHours: number[] ): ExerciseRe
   } else if(average > target - 1) {
     rating = 2;
     ratingDescription = 'Not too bad but could be better';
-  } else if (average > target) {
+  } 
+  if (average > target) {
     rating = 3;
     ratingDescription = 'Great! Keep up the good work!';
   }
@@ -43,9 +44,9 @@ const calculateExercises = (target:number, exerciseHours: number[] ): ExerciseRe
   };
 };
 
-interface ExerciseValues {
+export interface ExerciseValues {
   target: number
-  exerciseHours: number[]
+  daily_exercises: number[]
 }
 
 const ExerciseArguments = (args: string[]) : ExerciseValues => {
@@ -55,11 +56,11 @@ const ExerciseArguments = (args: string[]) : ExerciseValues => {
     throw new Error('Target needs to be the number and positive value');
   }
 
-  const exerciseHours: number[] = [];
+  const daily_exercises: number[] = [];
 
   for (let i = 3; i < args.length; i++) {
     if(!isNaN(Number(args[i]))){
-      exerciseHours.push(Number(args[i]));
+      daily_exercises.push(Number(args[i]));
     } else {
       throw new Error('Provided values are not numbers');
     }
@@ -67,13 +68,13 @@ const ExerciseArguments = (args: string[]) : ExerciseValues => {
 
   return {
     target: Number(args[2]),
-    exerciseHours
+    daily_exercises
   };
 };
 
 try{
-  const { target, exerciseHours } = ExerciseArguments(process.argv);
-  console.log(calculateExercises(target, exerciseHours));
+  const { target, daily_exercises } = ExerciseArguments(process.argv);
+  console.log(calculateExercises(target, daily_exercises));
 } catch(error: unknown) {
   let errorMessage = 'Something bad happened.';
   if(error instanceof Error) {
