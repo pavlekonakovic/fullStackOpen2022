@@ -1,14 +1,12 @@
 import { DiaryEntry } from "../types";
+import Diary from "./Diary";
 
 const Diares = ({ diaries }: { diaries: DiaryEntry[] }) => {
   return (
     <div>
+      <h2>Diary entries</h2>
       {diaries.map((diary) => (
-        <div key={diary.id}>
-          <h4>{diary.date}</h4>
-          <p>visibility: {diary.visibility}</p>
-          <p>weather: {diary.weather}</p>
-        </div>
+        <Diary diary={diary} key={diary.id} />
       ))}
     </div>
   );
