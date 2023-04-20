@@ -6,6 +6,20 @@ interface Props {
   error?: string;
 }
 
+interface WeatherOption{
+  value: Weather;
+  label: string;
+}
+
+interface VisibilityOption{
+  value: Visibility;
+  label: string;
+}
+
+const weatherOptions: WeatherOption[] = Object.values(Weather).map(v => ({ value: v, label: v.charAt(0).toUpperCase() + v.slice(1)}));
+
+const visibilityOptions: VisibilityOption[] = Object.values(Visibility).map(v => ({ value: v, label: v.charAt(0).toUpperCase() + v.slice(1)}));
+
 const AddDiary = ({ onSubmit, error }: Props) => {
   const [date, setDate] = useState("");
   const [visibility, setVisibility] = useState(Visibility.Good);
@@ -27,7 +41,7 @@ const AddDiary = ({ onSubmit, error }: Props) => {
   return (
     <div>
       <h2>Add new entry</h2>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red"}}>{error}</p>}
       <form onSubmit={addNewDiary}>
         <div>
           date
@@ -38,62 +52,32 @@ const AddDiary = ({ onSubmit, error }: Props) => {
           />
         </div>
         <div>
-          visibility: great{" "}
-          <input
-            type="radio"
-            name="visibility"
-            onChange={() => setVisibility(Visibility.Great)}
-          />
-          good{" "}
-          <input
-            type="radio"
-            name="visibility"
-            onChange={() => setVisibility(Visibility.Good)}
-          />
-          ok{" "}
-          <input
-            type="radio"
-            name="visibility"
-            onChange={() => setVisibility(Visibility.Ok)}
-          />
-          poor{" "}
-          <input
-            type="radio"
-            name="visibility"
-            onChange={() => setVisibility(Visibility.Poor)}
-          />
+          visibility:
+          {visibilityOptions.map((option) => (
+            <span key={option.label}>
+              {option.label}
+              <input
+              type="radio"
+              value={option.value}
+              name="visibility"
+              onChange={() => setVisibility(option.value)}
+              />
+            </span>
+          ))}
         </div>
         <div>
-          weather: sunny{" "}
-          <input
-            type="radio"
-            name="weather"
-            onChange={() => setWeather(Weather.Sunny)}
-          />
-          rainy{" "}
-          <input
-            type="radio"
-            name="weather"
-            onChange={() => setWeather(Weather.Rainy)}
-          />
-          cloudy{" "}
-          <input
-            type="radio"
-            name="weather"
-            onChange={() => setWeather(Weather.Cloudy)}
-          />
-          stormy{" "}
-          <input
-            type="radio"
-            name="weather"
-            onChange={() => setWeather(Weather.Stormy)}
-          />
-          windy{" "}
-          <input
-            type="radio"
-            name="weather"
-            onChange={() => setWeather(Weather.Windy)}
-          />
+          weather:
+          {weatherOptions.map((option) => (
+            <span key={option.label}>
+              {option.label}
+              <input
+              type="radio"
+              value={option.value}
+              name="weather"
+              onChange={() => setWeather(option.value)}
+              />
+            </span>
+          ))}
         </div>
         <div>
           comment

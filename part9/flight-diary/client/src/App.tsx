@@ -5,7 +5,6 @@ import Diares from "./components/Diares";
 import AddDiary from "./components/AddDiary";
 
 import diaryServices from "./services/diaries";
-import toNewDiaryEntry from "./utils";
 
 function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -21,8 +20,7 @@ function App() {
 
   const submitNewDiary = async (values: NewDiaryEntry) => {
     try {
-      const newDiary = toNewDiaryEntry(values);
-      const diary = await diaryServices.create(newDiary);
+      const diary = await diaryServices.create(values);
       setDiaries(diaries.concat(diary));
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -53,7 +51,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div>
       <AddDiary onSubmit={submitNewDiary} error={errorMessage} />
       <Diares diaries={diaries} />
     </div>
