@@ -2,23 +2,25 @@ import { useState } from "react";
 import { NewDiaryEntry, Weather, Visibility } from "../types";
 
 interface Props {
-  onSubmit: (values: NewDiaryEntry) => void;
+  onSubmit: (values: NewDiaryEntry) => Promise<void>;
   error?: string;
 }
 
-interface WeatherOption{
+interface WeatherOption {
   value: Weather;
-  label: string;
 }
 
-interface VisibilityOption{
+interface VisibilityOption {
   value: Visibility;
-  label: string;
 }
 
-const weatherOptions: WeatherOption[] = Object.values(Weather).map(v => ({ value: v, label: v.charAt(0).toUpperCase() + v.slice(1)}));
+const weatherOptions: WeatherOption[] = Object.values(Weather).map((v) => ({
+  value: v,
+}));
 
-const visibilityOptions: VisibilityOption[] = Object.values(Visibility).map(v => ({ value: v, label: v.charAt(0).toUpperCase() + v.slice(1)}));
+const visibilityOptions: VisibilityOption[] = Object.values(Visibility).map(
+  (v) => ({ value: v })
+);
 
 const AddDiary = ({ onSubmit, error }: Props) => {
   const [date, setDate] = useState("");
@@ -41,7 +43,7 @@ const AddDiary = ({ onSubmit, error }: Props) => {
   return (
     <div>
       <h2>Add new entry</h2>
-      {error && <p style={{ color: "red"}}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={addNewDiary}>
         <div>
           date
@@ -54,13 +56,13 @@ const AddDiary = ({ onSubmit, error }: Props) => {
         <div>
           visibility:
           {visibilityOptions.map((option) => (
-            <span key={option.label}>
-              {option.label}
+            <span key={option.value}>
+              {option.value}
               <input
-              type="radio"
-              value={option.value}
-              name="visibility"
-              onChange={() => setVisibility(option.value)}
+                type="radio"
+                value={option.value}
+                name="visibility"
+                onChange={() => setVisibility(option.value)}
               />
             </span>
           ))}
@@ -68,13 +70,13 @@ const AddDiary = ({ onSubmit, error }: Props) => {
         <div>
           weather:
           {weatherOptions.map((option) => (
-            <span key={option.label}>
-              {option.label}
+            <span key={option.value}>
+              {option.value}
               <input
-              type="radio"
-              value={option.value}
-              name="weather"
-              onChange={() => setWeather(option.value)}
+                type="radio"
+                value={option.value}
+                name="weather"
+                onChange={() => setWeather(option.value)}
               />
             </span>
           ))}
