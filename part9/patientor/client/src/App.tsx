@@ -7,6 +7,7 @@ import { apiBaseUrl } from "./constants";
 import { Patient } from "./types";
 
 import patientService from "./services/patients";
+import PatientPage from "./components/PatientPage";
 import PatientListPage from "./components/PatientListPage";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Divider hidden />
           <Routes>
             <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
+            <Route path="/patients/:id" element={<PatientPage />} />
           </Routes>
         </Container>
       </Router>
