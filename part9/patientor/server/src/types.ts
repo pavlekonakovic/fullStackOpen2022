@@ -57,7 +57,6 @@ interface OccupationalHealthcareEntry extends BaseEntry {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type Entry =
   | HealthCheckEntry
   | HospitalEntry
